@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">CallSend</string>
+    <string name="numberPhone">Номер телефона</string>
+    <string name="textSms">текст смс</string>
+    <string name="call">Позвонить</string>
+    <string name="send">Отправить СМС</string>
+</resources>
