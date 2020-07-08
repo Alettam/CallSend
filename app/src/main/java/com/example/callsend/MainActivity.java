@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(this,"Нет разрешения на звонки",Toast.LENGTH_LONG).show();
                 }
             case MY_PERMISSIONS_REQUEST_SEND_SMS:
-                if(grantResults.length>0 && grantResults[1] == PackageManager.PERMISSION_GRANTED){
+                if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                     sendSms();
                 }else {
                     Toast.makeText(this,"Нет разрешения на отправку смс",Toast.LENGTH_LONG).show();
