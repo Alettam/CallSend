@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -53,35 +54,50 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sendSms() {
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) !=
-                PackageManager.PERMISSION_GRANTED){
+        readView();
+        if (TextUtils.isEmpty(numberPhone)) {
+            Toast.makeText(this,"Введите номер телефона",Toast.LENGTH_LONG).show();
+        } else if (TextUtils.isEmpty(textSms)) {
+            Toast.makeText(this,"Введите текст СМС",Toast.LENGTH_LONG).show();
+        } else {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) !=
+                PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS},
                     MY_PERMISSIONS_REQUEST_SEND_SMS);
-        }else {
+        } else {
             SmsManager smgr = SmsManager.getDefault();
             smgr.sendTextMessage(numberPhone, null, textSms,
-                    null,null);
+                    null, null);
         }
+    }
 
 
     }
 
     private void callByNumber() {
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) !=
-                PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE},
-                    MY_PERMISSIONS_REQUEST_CALL_PHONE);
+        readView();
+        if(TextUtils.isEmpty(numberPhone)){
+            Toast.makeText(this,"Введите номер телефона",Toast.LENGTH_LONG).show();
         }else {
-            Intent dialIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + numberPhone));
-            startActivity(dialIntent);
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) !=
+                    PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE},
+                        MY_PERMISSIONS_REQUEST_CALL_PHONE);
+            } else {
+                Intent dialIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + numberPhone));
+                startActivity(dialIntent);
+            }
         }
+    }
+
+    private void readView(){
+        numberPhone = mNumberEdTxt.getText().toString();
+        textSms = mTextEdTxt.getText().toString();
     }
 
     private void initView() {
         mNumberEdTxt = findViewById(R.id.numberEdTxt);
-        numberPhone = mNumberEdTxt.getText().toString();
         mTextEdTxt = findViewById(R.id.textEdTxt);
-        textSms = mTextEdTxt.getText().toString();
         mCallBtn = findViewById(R.id.callBtn);
         mSendBtn = findViewById(R.id.sendBtn);
 
